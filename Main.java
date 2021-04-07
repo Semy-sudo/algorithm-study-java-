@@ -1,31 +1,34 @@
-import java.util.*;
 class Solution {
-    public int[] solution(int[] array, int[][] commands) {
-        int[] answer = new int[commands.length];
-
-        for(int i=0;i<commands.length;i++){
-          int[] new_array = new int[commands[i][1]-commands[i][0]+1];
-          for(int j=0;j<new_array.length;j++){
-            new_array[j] = array[j+commands[i][0]-1];
-          }
-          Arrays.sort(new_array);
-          answer[i] = new_array[commands[i][2]-1];
+    public int solution(int n, int[][] computers) {
+      int answer = 0;
+      boolean[] check = new boolean[n];//n개수만큼 boolean배열을 만듬
+      
+      for(int i=0;i<n;i++){
+        if(check[i]!=true){
+          dfs(computers,j,check);
+          answer++;
         }
+      }
 
-        return answer;
-    }
-}
-
-class Main {
-  public static void main(String[] args) {
-    int[] array = {1, 5, 2, 6, 3, 7, 4};
-    int[][] commands = {{2, 5, 3}, {4, 4, 1}, {1, 7, 3}};
-    Solution sol = new Solution();
-    int[] answer = sol.solution(array, commands);
-    for(int i:answer){
-      System.out.println(i);
-    }
+      return answer;
 
   }
+
+  boolean[] dfs(int[][] computers, int i, boolean[] check){
+    check[i]=true;
+    
+    for(int j=0;j<n;j++){
+      if(i!=j && computers[i][j]==1 && check[j]==false){
+        dfs(computers,j,check);
+      }
+    }
+    return check;
+  }
+  @Test
+  public void 정답() {
+    Assert.assertEquals(2, solution(3, new int[][]{{1, 1, 0}, {1, 1, 0}, {0, 0, 1}}));
+    Assert.assertEquals(1, solution(3, new int[][]{{1, 1, 0}, {1, 1, 1}, {0, 1, 1}}));
+  }
+
 }
 
